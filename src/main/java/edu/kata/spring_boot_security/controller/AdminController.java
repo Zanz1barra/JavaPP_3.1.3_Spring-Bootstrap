@@ -29,6 +29,7 @@ public class AdminController {
     public String getUsersListWithFormForAddUser(
             ModelMap modelMap) {
         modelMap.addAttribute("userList", userService.getUserList());
+        modelMap.addAttribute("isAdmin", true);
         return "admin/user_list";
     }
 
@@ -38,6 +39,7 @@ public class AdminController {
         User user = new User();
         modelMap.addAttribute("addedUser", user);
         modelMap.addAttribute("allRoles", roleService.getRolesList());
+        modelMap.addAttribute("isAdmin", true);
         return "admin/add_user_form";
     }
 
@@ -47,6 +49,7 @@ public class AdminController {
             ModelMap modelMap) {
         modelMap.addAttribute("beingUpdateUser", userService.getUserById(userId).orElse(null));
         modelMap.addAttribute("userList", userService.getUserList());
+        modelMap.addAttribute("isAdmin", true);
         return "admin/user_list";
     }
 

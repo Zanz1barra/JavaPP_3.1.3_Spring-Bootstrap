@@ -17,6 +17,7 @@ public class UserController {
             @AuthenticationPrincipal User user,
             ModelMap modelMap) {
         modelMap.addAttribute("user", user);
+        modelMap.addAttribute("isUser", true);
         return "user/user_data";
     }
 }
