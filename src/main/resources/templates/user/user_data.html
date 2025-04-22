@@ -7,38 +7,29 @@
     <head>
         <meta charset="UTF-8">
         <title>User Data</title>
-        <link th:href="@{/css/main_style.css}" rel="stylesheet" />
     </head>
     <body>
         <main layout:fragment="content">
-            <table>
+            <h1>User information page</h1>
+            <h2>About user</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Firstname</th>
+                        <th scope="col">Lastname</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Roles</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr>
-                        <td><label for="username">Login: </label></td>
-                        <td><label id="username" th:text="*{user.username}"></label></td>
-                    </tr>
-                    <tr>
-                        <td><label for="firstName">First Name:</label></td>
-                        <td><label id="firstName" th:text="*{user.firstname}"></label></td>
-                    </tr>
-                    <tr>
-                        <td><label for="lastName">Last Name:</label></td>
-                        <td><label id="lastName" th:text="*{user.lastname}"></label></td>
-                    </tr>
-                    <tr>
-                        <td><label for="age">Nickname: </label></td>
-                        <td><label id="age" th:text="*{user.age}"></label></td>
-                    </tr>
-                    <tr>
-                        <td><label for="roles">Roles:</label></td>
-                        <td>
-                            <div>
-                                <th:block th:each="role : ${user.getAuthorities()}" id="roles">
-                                    <label th:text="${role.name}"></label><br/>
-                                </th:block>
-                            </div>
-                        </td>
-                    </tr>
+                    <td th:utext="${user.id}">#</td>
+                    <td th:utext="${user.firstname}"></td>
+                    <td th:utext="${user.lastname}"></td>
+                    <td th:utext="${user.age}"></td>
+                    <td th:utext="${user.username}"></td>
+                    <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
                 </tbody>
             </table>
         </main>
