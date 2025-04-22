@@ -25,22 +25,17 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping(path = {"", "/", "/all", "/all/"})
+    @GetMapping(path = {"", "/"})
     public String getUsersListWithFormForAddUser(
+            String tab,
             ModelMap modelMap) {
         modelMap.addAttribute("userList", userService.getUserList());
         modelMap.addAttribute("isAdmin", true);
-        return "admin/user_list";
-    }
-
-    @GetMapping(path = {"/add_user/"})
-    public String getAddUserForm(
-            ModelMap modelMap) {
-        User user = new User();
-        modelMap.addAttribute("addedUser", user);
+        modelMap.addAttribute("addedUser", new User());
         modelMap.addAttribute("allRoles", roleService.getRolesList());
-        modelMap.addAttribute("isAdmin", true);
-        return "admin/add_user_form";
+        modelMap.addAttribute("currentTab",
+                (tab == null) ? "user_list" : (tab.equals("add")) ? "add_user_form" : "user_list");
+        return "admin/admin_main";
     }
 
     @GetMapping(path = {"/update/"})
@@ -48,9 +43,7 @@ public class AdminController {
             @RequestParam(name = "id") Long userId,
             ModelMap modelMap) {
         modelMap.addAttribute("beingUpdateUser", userService.getUserById(userId).orElse(null));
-        modelMap.addAttribute("userList", userService.getUserList());
-        modelMap.addAttribute("isAdmin", true);
-        return "admin/user_list";
+        return getUsersListWithFormForAddUser("all", modelMap);
     }
 
     @PostMapping(path = {"/add/"})

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+    <head>
+        <meta charset="UTF-8">
+        <link th:href="@{/css/main_style.css}" rel="stylesheet"/>
+        <title>Admin</title>
+    </head>
+    <body>
+        <main layout:fragment="content">
+            <div class="container mt-4">
+                <!-- Навигация -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${currentTab == 'user_list'} ? 'active'"
+                           th:href="@{/admin(tab='all')}">Users list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${currentTab == 'add_user_form'} ? 'active'"
+                           th:href="@{/admin(tab='add')}">Add User</a>
+                    </li>
+                </ul>
+
+                <!-- Контент вкладок -->
+                <div th:replace="~{'admin/admin_tabs' :: ${currentTab}}"></div>
+            </div>
+        </main>
+    </body>
+</html>

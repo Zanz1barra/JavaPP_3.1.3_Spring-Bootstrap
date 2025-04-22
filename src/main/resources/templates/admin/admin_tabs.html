@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}"
+      lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Tabs</title>
+        <link th:href="@{/css/main_style.css}" rel="stylesheet" />
+    </head>
+    <body>
+        <div th:fragment="add_user_form"
+             class="tab-pane fade"
+             th:classappend="${currentTab == 'add_user_form'} ? 'show active'">
+            <table>
+                <tbody>
+                <!--/*@thymesVar id="addedUser" type="edu.kata.spring_boot_security.entity.User"*/-->
+                <form method="post" th:Object="${addedUser}" th:action="@{/admin/add/}">
+                    <tr>
+                        <td><label for="username">Login: </label></td>
+                        <td><input type="text" id="username" th:field="*{username}" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password</label></td>
+                        <td><input type="password" id="password" th:field="*{password}" required>
+                    </tr>
+                    <tr>
+                        <td><label for="nickname">Firstname:</label></td>
+                        <td><input type="text" id="nickname" th:field="*{firstname}" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="firstName">Lastname:</label></td>
+                        <td><input type="text" id="firstName" th:field="*{lastname}" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="lastName">Age:</label></td>
+                        <td><input type="number" id="lastName" th:field="*{age}" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="roles">Roles:</label></td>
+                        <td>
+                            <select th:field="*{roles}"
+                                    th:default="${allRoles.getFirst()}"
+                                    id="roles"
+                                    multiple
+                                    required>
+                                <option th:each="role : ${allRoles}"
+                                        th:value="${role.id}"
+                                        th:text="${role.name}">
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button type="submit">Save</button></td>
+                    </tr>
+                </form>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:fragment="user_list"
+             class="tab-pane fade"
+             th:classappend="${currentTab == 'user_list'} ? 'show active'">
+            <h1>List of users</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Firstname</th>
+                    <th scope="col">Lastname</th>
+                    <th scope="col">Age</th>
+                    <th scope="col" colspan="2"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${userList}">
+                    <div th:if="${(beingUpdateUser == null) || (user.id != beingUpdateUser.id)}">
+                        <td th:utext="${user.id}">Id</td>
+                        <td th:utext="${user.firstname}">Firstname</td>
+                        <td th:utext="${user.lastname}">Lastname</td>
+                        <td th:utext="${user.age}">Lastname</td>
+                        <td>
+                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+                            <form th:action="@{/admin/update/}" th:object="${user}" th:method="get">
+                                <input type="hidden" th:value="*{id}" name="id">
+                                <button class="update_symbol" type="submit"></button>
+                            </form>
+                        </td>
+                        <td>
+                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+                            <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
+                                <input type="hidden" th:value="*{id}" name="id">
+                                <button class="remove_symbol" type="submit"></button>
+                            </form>
+                        </td>
+                    </div>
+                    <div th:if="${(beingUpdateUser != null) && (user.id == beingUpdateUser.id)}">
+                        <!--/*@thymesVar id="beingUpdateUser" type="edu.kata.spring_boot_security.entity.User"*/-->
+                        <form method="post" th:Object="${beingUpdateUser}" th:action="@{/admin/update/}" >
+                            <td th:utext="*{id}">Id</td>
+                            <td><input th:field="*{firstname}" type="text"/></td>
+                            <td><input th:field="*{lastname}" type="text"/></td>
+                            <td><input th:field="*{age}" type="number"/></td>
+                            <td>
+                                <input type="hidden" th:value="*{id}" name="id">
+                                <button class="add_symbol" type="submit"></button>
+                            </td>
+                        </form>
+                        <td>
+                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+                            <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
+                                <input type="hidden" th:value="*{id}" name="id">
+                                <button class="remove_symbol"></button>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
