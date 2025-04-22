@@ -7,7 +7,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Admin Tabs</title>
-        <link th:href="@{/css/main_style.css}" rel="stylesheet" />
     </head>
     <body>
         <div th:fragment="add_user_form"
@@ -63,36 +62,41 @@
         <div th:fragment="user_list"
              class="tab-pane fade"
              th:classappend="${currentTab == 'user_list'} ? 'show active'">
-            <h1>List of users</h1>
-            <table>
+            <h2>All users</h2>
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Firstname</th>
                     <th scope="col">Lastname</th>
                     <th scope="col">Age</th>
-                    <th scope="col" colspan="2"></th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user : ${userList}">
                     <div th:if="${(beingUpdateUser == null) || (user.id != beingUpdateUser.id)}">
-                        <td th:utext="${user.id}">Id</td>
-                        <td th:utext="${user.firstname}">Firstname</td>
-                        <td th:utext="${user.lastname}">Lastname</td>
-                        <td th:utext="${user.age}">Lastname</td>
+                        <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+                        <td th:utext="${user.id}">#</td>
+                        <td th:utext="${user.firstname}"></td>
+                        <td th:utext="${user.lastname}"></td>
+                        <td th:utext="${user.age}"></td>
+                        <td th:utext="${user.username}"></td>
+                        <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
                         <td>
-                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
                             <form th:action="@{/admin/update/}" th:object="${user}" th:method="get">
                                 <input type="hidden" th:value="*{id}" name="id">
-                                <button class="update_symbol" type="submit"></button>
+                                <button class="btn btn-success" type="submit">Edit</button>
                             </form>
                         </td>
                         <td>
                             <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
                             <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
                                 <input type="hidden" th:value="*{id}" name="id">
-                                <button class="remove_symbol" type="submit"></button>
+                                <button class="btn btn-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </div>
@@ -103,16 +107,18 @@
                             <td><input th:field="*{firstname}" type="text"/></td>
                             <td><input th:field="*{lastname}" type="text"/></td>
                             <td><input th:field="*{age}" type="number"/></td>
+                            <td th:utext="${user.username}"></td>
+                            <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
                             <td>
                                 <input type="hidden" th:value="*{id}" name="id">
-                                <button class="add_symbol" type="submit"></button>
+                                <button class="btn btn-success" type="submit">Submit</button>
                             </td>
                         </form>
                         <td>
                             <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
                             <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
                                 <input type="hidden" th:value="*{id}" name="id">
-                                <button class="remove_symbol"></button>
+                                <button class="btn btn-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </div>
