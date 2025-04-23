@@ -38,12 +38,13 @@ public class AdminController {
         return "admin/admin_main";
     }
 
-    @GetMapping(path = {"/update/"})
-    public String getUsersListWithFormForUpdateUser(
+    @GetMapping(path = {"/update"})
+    public String getModalWindowWithFormForUpdateUser(
             @RequestParam(name = "id") Long userId,
             ModelMap modelMap) {
-        modelMap.addAttribute("beingUpdateUser", userService.getUserById(userId).orElse(null));
-        return getUsersListWithFormForAddUser("all", modelMap);
+        modelMap.addAttribute("user", userService.getUserById(userId));
+        modelMap.addAttribute("allRoles", roleService.getRolesList());
+        return "admin/admin_edit_form :: editForm";
     }
 
     @PostMapping(path = {"/add/"})

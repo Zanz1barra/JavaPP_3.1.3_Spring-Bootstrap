@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <div th:fragment="editForm">
+            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+            <form th:action="@{/admin/update/}"
+                  th:object="${user}"
+                  method="post">
+                <div class="mb-3">
+                    <label for="id_field"
+                           class="form-label text-center d-block">
+                        <strong>ID</strong>
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="id_field"
+                           th:field="*{id}"
+                           readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="firstname_field"
+                           class="form-label text-center d-block">
+                        <strong>First name</strong>
+                    </label>
+                    <input type="text"
+                           id="firstname_field"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('firstname')} ? 'is-invalid'"
+                           th:field="*{firstname}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('firstname')}"
+                         th:errors="*{firstname}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="lastname_field"
+                           class="form-label text-center d-block">
+                        <strong>Last name</strong>
+                    </label>
+                    <input type="text"
+                           id="lastname_field"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('lastname')} ? 'is-invalid'"
+                           th:field="*{lastname}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('lastname')}"
+                         th:errors="*{lastname}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="age_field"
+                           class="form-label text-center d-block">
+                        <strong>Age</strong>
+                    </label>
+                    <input type="number"
+                           id="age_field"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('age')} ? 'is-invalid'"
+                           th:field="*{age}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('age')}"
+                         th:errors="*{age}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="login_field"
+                           class="form-label text-center d-block">
+                        <strong>Login</strong>
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="login_field"
+                           th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                           th:field="*{username}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('username')}"
+                         th:errors="*{username}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password_field"
+                           class="form-label text-center d-block">
+                        <strong>Password</strong>
+                    </label>
+                    <input type="password"
+                           class="form-control"
+                           id="password_field"
+                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                           th:field="*{password}">
+                    <div class="invalid-feedback"
+                         th:if="${#fields.hasErrors('password')}"
+                         th:errors="*{password}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="roles_select"
+                           class="form-label text-center d-block">
+                        <strong>Roles</strong>
+                    </label>
+                    <select class="form-select w-100"
+                            th:field="*{roles}"
+                            id="roles_select"
+                            multiple
+                            required>
+                        <option th:each="role : ${allRoles}"
+                                th:value="${role.id}"
+                                th:text="${role.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    <button type="submit"
+                            class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

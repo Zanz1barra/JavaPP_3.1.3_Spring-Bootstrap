@@ -116,53 +116,55 @@
                 </thead>
                 <tbody>
                 <tr th:each="user : ${userList}">
-                    <div th:if="${(beingUpdateUser == null) || (user.id != beingUpdateUser.id)}">
+                    <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
+                    <td th:utext="${user.id}">#</td>
+                    <td th:utext="${user.firstname}"></td>
+                    <td th:utext="${user.lastname}"></td>
+                    <td th:utext="${user.age}"></td>
+                    <td th:utext="${user.username}"></td>
+                    <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
+                    <td>
+                        <button class="btn btn-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                th:onclick="'loadUser(' + ${user.id} + ')'">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
                         <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
-                        <td th:utext="${user.id}">#</td>
-                        <td th:utext="${user.firstname}"></td>
-                        <td th:utext="${user.lastname}"></td>
-                        <td th:utext="${user.age}"></td>
-                        <td th:utext="${user.username}"></td>
-                        <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
-                        <td>
-                            <form th:action="@{/admin/update/}" th:object="${user}" th:method="get">
-                                <input type="hidden" th:value="*{id}" name="id">
-                                <button class="btn btn-success" type="submit">Edit</button>
-                            </form>
-                        </td>
-                        <td>
-                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
-                            <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
-                                <input type="hidden" th:value="*{id}" name="id">
-                                <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </div>
-                    <div th:if="${(beingUpdateUser != null) && (user.id == beingUpdateUser.id)}">
-                        <!--/*@thymesVar id="beingUpdateUser" type="edu.kata.spring_boot_security.entity.User"*/-->
-                        <form method="post" th:Object="${beingUpdateUser}" th:action="@{/admin/update/}" >
-                            <td th:utext="*{id}">Id</td>
-                            <td><input th:field="*{firstname}" type="text"/></td>
-                            <td><input th:field="*{lastname}" type="text"/></td>
-                            <td><input th:field="*{age}" type="number"/></td>
-                            <td th:utext="${user.username}"></td>
-                            <td th:text="${#strings.listJoin(user.authorities.![name], ' ')}"></td>
-                            <td>
-                                <input type="hidden" th:value="*{id}" name="id">
-                                <button class="btn btn-success" type="submit">Submit</button>
-                            </td>
+                        <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
+                            <input type="hidden" th:value="*{id}" name="id">
+                            <button class="btn btn-danger" type="submit">Delete</button>
                         </form>
-                        <td>
-                            <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
-                            <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
-                                <input type="hidden" th:value="*{id}" name="id">
-                                <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
+            <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="editFormContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div layout:fragment="scripts">
+                <script th:inline="javascript">
+                    function loadUser(userId) {
+                        fetch('/admin/update?id=' + userId)
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById('editFormContainer').innerHTML = html;
+                            });
+                    }
+                </script>
+            </div>
         </div>
     </body>
 </html>
