@@ -12,51 +12,89 @@
         <div th:fragment="add_user_form"
              class="tab-pane fade"
              th:classappend="${currentTab == 'add_user_form'} ? 'show active'">
-            <table>
-                <tbody>
-                <!--/*@thymesVar id="addedUser" type="edu.kata.spring_boot_security.entity.User"*/-->
-                <form method="post" th:Object="${addedUser}" th:action="@{/admin/add/}">
-                    <tr>
-                        <td><label for="username">Login: </label></td>
-                        <td><input type="text" id="username" th:field="*{username}" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="password">Password</label></td>
-                        <td><input type="password" id="password" th:field="*{password}" required>
-                    </tr>
-                    <tr>
-                        <td><label for="nickname">Firstname:</label></td>
-                        <td><input type="text" id="nickname" th:field="*{firstname}" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="firstName">Lastname:</label></td>
-                        <td><input type="text" id="firstName" th:field="*{lastname}" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="lastName">Age:</label></td>
-                        <td><input type="number" id="lastName" th:field="*{age}" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="roles">Roles:</label></td>
-                        <td>
-                            <select th:field="*{roles}"
-                                    th:default="${allRoles.getFirst()}"
-                                    id="roles"
-                                    multiple
-                                    required>
-                                <option th:each="role : ${allRoles}"
-                                        th:value="${role.id}"
-                                        th:text="${role.name}">
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><button type="submit">Save</button></td>
-                    </tr>
-                </form>
-                </tbody>
-            </table>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                        <!--/*@thymesVar id="addedUser" type="edu.kata.spring_boot_security.entity.User"*/-->
+                        <form method="post"
+                              th:Object="${addedUser}"
+                              th:action="@{/admin/add/}">
+                            <div class="mb-3">
+                                <label for="firstname_field"
+                                       class="form-label text-center d-block">
+                                    <strong>First name</strong>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="firstname_field"
+                                       placeholder="Firstname"
+                                       autocomplete="given-name"
+                                       th:field="*{firstname}"
+                                       required>
+                                <label for="lastname_field"
+                                       class="form-label text-center d-block">
+                                    <strong>Last name</strong>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="lastname_field"
+                                       placeholder="Lastname"
+                                       autocomplete="family-name"
+                                       th:field="*{lastname}"
+                                       required>
+                                <label for="age_field"
+                                       class="form-label text-center d-block">
+                                    <strong>Age</strong>
+                                </label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="age_field"
+                                       placeholder="Age"
+                                       th:field="*{age}"
+                                       required>
+                                <label for="login_field"
+                                       class="form-label text-center d-block">
+                                    <strong>Login</strong>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="login_field"
+                                       placeholder="Login"
+                                       autocomplete="username"
+                                       th:field="*{username}"
+                                       required>
+                                <label for="password_field"
+                                       class="form-label text-center d-block">
+                                    <strong>Password</strong>
+                                </label>
+                                <input type="password"
+                                       class="form-control"
+                                       id="password_field"
+                                       placeholder="Password"
+                                       autocomplete="new-password"
+                                       th:field="*{password}"
+                                       required>
+                                <label for="roles_select"
+                                       class="form-label text-center d-block">
+                                    <strong>Roles</strong>
+                                </label>
+                                <select class="form-select w-100"
+                                        th:field="*{roles}"
+                                        th:default="${allRoles.getFirst()}"
+                                        id="roles_select"
+                                        multiple
+                                        required>
+                                    <option th:each="role : ${allRoles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                                <button class="btn btn-success" type="submit">Add new user</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div th:fragment="user_list"
