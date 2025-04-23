@@ -47,6 +47,15 @@ public class AdminController {
         return "admin/admin_edit_form :: editForm";
     }
 
+    @GetMapping(path = {"/delete"})
+    public String getModalWindowWithFormForDeleteUser(
+            @RequestParam(name = "id") Long userId,
+            ModelMap modelMap) {
+        modelMap.addAttribute("user", userService.getUserById(userId));
+        modelMap.addAttribute("allRoles", roleService.getRolesList());
+        return "admin/admin_delete_form :: deleteForm";
+    }
+
     @PostMapping(path = {"/add/"})
     public String addUser(
             User user,
@@ -56,9 +65,10 @@ public class AdminController {
     }
 
     @PostMapping(path = {"/delete/"})
-    public String deleteUserById(
+    public String deleteUser(
             User user,
             ModelMap modelMap) {
+        System.out.println(user);
         userService.deleteUser(user);
         return "redirect:/admin/";
     }

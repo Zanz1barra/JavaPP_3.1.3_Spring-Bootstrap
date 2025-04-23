@@ -127,16 +127,17 @@
                         <button class="btn btn-success"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editModal"
-                                th:onclick="'loadUser(' + ${user.id} + ')'">
+                                th:onclick="'loadUserForUpdate(' + ${user.id} + ')'">
                             Edit
                         </button>
                     </td>
                     <td>
-                        <!--/*@thymesVar id="user" type="edu.kata.spring_boot_security.entity.User"*/-->
-                        <form th:action="@{/admin/delete/}" th:object="${user}" th:method="post">
-                            <input type="hidden" th:value="*{id}" name="id">
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
+                        <button class="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                th:onclick="'loadUserForDelete(' + ${user.id} + ')'">
+                            Delete
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -154,13 +155,32 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="deleteFormContainer"></div>
+                    </div>
+                </div>
+            </div>
+
             <div layout:fragment="scripts">
                 <script th:inline="javascript">
-                    function loadUser(userId) {
+                    function loadUserForUpdate(userId) {
                         fetch('/admin/update?id=' + userId)
                             .then(response => response.text())
                             .then(html => {
                                 document.getElementById('editFormContainer').innerHTML = html;
+                            });
+                    }
+                    function loadUserForDelete(userId) {
+                        fetch('/admin/delete?id=' + userId)
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById('deleteFormContainer').innerHTML = html;
                             });
                     }
                 </script>
